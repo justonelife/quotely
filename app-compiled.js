@@ -9,24 +9,70 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var App = function (_React$Component) {
 	_inherits(App, _React$Component);
 
-	function App() {
+	function App(props) {
 		_classCallCheck(this, App);
 
-		return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+		var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+
+		_this.state = {
+			error: null,
+			isLoaded: false,
+			data: []
+		};
+		return _this;
 	}
 
 	_createClass(App, [{
+		key: "componentDidMount",
+		value: function componentDidMount() {
+			var _this2 = this;
+
+			fetch('https://type.fit/api/quotes').then(function (res) {
+				return res.json();
+			}).then(function (result) {
+				_this2.setState({
+					isLoaded: true,
+					data: result
+				});
+			}, function (error) {
+				_this2.setState({
+					isLoaded: true,
+					error: error
+				});
+			});
+		}
+	}, {
 		key: "render",
 		value: function render() {
-			return React.createElement(
-				React.Fragment,
-				null,
-				React.createElement(
-					"h1",
+			var _state = this.state,
+			    error = _state.error,
+			    isLoaded = _state.isLoaded,
+			    data = _state.data;
+
+
+			if (error) {
+				return React.createElement(
+					"div",
 					null,
-					"Hello"
-				)
-			);
+					error.message
+				);
+			} else if (!isLoaded) {
+				return React.createElement(
+					"div",
+					null,
+					"Loading..."
+				);
+			} else {
+				return React.createElement(
+					React.Fragment,
+					null,
+					React.createElement(
+						"h2",
+						null,
+						data[Math.floor(Math.random() * 1644)].text
+					)
+				);
+			}
 		}
 	}]);
 
