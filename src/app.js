@@ -1,3 +1,22 @@
+class BrickLoad extends React.Component {
+	render() {
+		return (
+			<div class="brld-body">
+				<div class="brld-wrp">
+			        <div class="brld">
+			            <div class="brld__brick brld__brick__1"></div>
+			            <div class="brld__brick brld__brick__2"></div>
+			            <div class="brld__brick brld__brick__3"></div>
+			            <div class="brld__brick brld__brick__4"></div>
+			            <div class="brld__brick brld__brick__5"></div>
+			            <div class="brld__brick brld__brick__6"></div>
+			        </div>
+			    </div>
+			</div>
+		);
+	}
+}
+
 class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -13,7 +32,7 @@ class App extends React.Component {
 			.then(
 				(result) => {
 					this.setState({
-						isLoaded: true,
+						isLoaded: false,
 						data: result
 					});
 				},
@@ -31,7 +50,7 @@ class App extends React.Component {
 		if (error) {
 			return <div>{error.message}</div>;
 		} else if (!isLoaded) {
-			return <div>Loading...</div>;
+			return <BrickLoad />;
 		} else {
 			return (
 				<React.Fragment>
