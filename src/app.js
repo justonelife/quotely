@@ -1,3 +1,8 @@
+const FLAT_UI_COLOR = ["#ffeaa7", "#55efc4", "#81ecec", "#74b9ff",
+					   "#00cec9", "#a29bfe", "#fd79a8", "#ff7675",
+					   "#fdcb6e", "#fab1a0", "#B53471", "#4a69bd",
+					   "#079992", "#60a3bc", "#ff7f50", "#ff6b6b"];
+
 class BrickLoad extends React.Component {
 	render() {
 		return (
@@ -21,6 +26,7 @@ class Heart extends React.Component {
 	render() {
 		const quote = this.props.quote;
 		const author = this.props.author;
+		const fillcolor = this.props.heartColor;
 		return (
 			<div className="heartWrp">
 		        <div className="heart">
@@ -29,7 +35,7 @@ class Heart extends React.Component {
 		                      d="M61 1 L111 1 L171 36 L231 1 L281 1 L341 36 L341 136 L171 266 L1 136 L1 36 Z"
 		                      stroke="#491604"
 		                      strokeWidth="2"
-		                      fill="#FF6B6B"
+		                      fill={fillcolor}
 		                />
 		            </svg>
 		            <div className="quote">
@@ -81,7 +87,9 @@ class App extends React.Component {
 			error: null,
 			isLoaded: false,
 			data: [],
-			dataIndex: 0
+			dataIndex: 0,
+			colorset: FLAT_UI_COLOR,
+			heartColor: "#ff6b6b"
 		};
 		this.onTonTonClick = this.onTonTonClick.bind(this);
 	}
@@ -105,8 +113,13 @@ class App extends React.Component {
 	}
 	onTonTonClick() {
 		let data = this.state.data;
+
+		let colorset = this.state.colorset;
+		let colorset_len = colorset.length;
+
 		this.setState({
-			dataIndex: Math.floor(Math.random() * data.length)
+			dataIndex: Math.floor(Math.random() * data.length),
+			heartColor: colorset[Math.floor(Math.random() * colorset_len)]
 		});
 	}
 	render() {
@@ -121,7 +134,8 @@ class App extends React.Component {
 			return (
 				<React.Fragment>
 					<Heart quote={data[this.state.dataIndex].text} 
-						   author={data[this.state.dataIndex].author} />
+						   author={data[this.state.dataIndex].author}
+						   heartColor={this.state.heartColor} />
 					<TonTon onTonTonClick={this.onTonTonClick} />
 				</React.Fragment>
 			);

@@ -6,6 +6,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var FLAT_UI_COLOR = ["#ffeaa7", "#55efc4", "#81ecec", "#74b9ff", "#00cec9", "#a29bfe", "#fd79a8", "#ff7675", "#fdcb6e", "#fab1a0", "#B53471", "#4a69bd", "#079992", "#60a3bc", "#ff7f50", "#ff6b6b"];
+
 var BrickLoad = function (_React$Component) {
 	_inherits(BrickLoad, _React$Component);
 
@@ -56,6 +58,7 @@ var Heart = function (_React$Component2) {
 		value: function render() {
 			var quote = this.props.quote;
 			var author = this.props.author;
+			var fillcolor = this.props.heartColor;
 			return React.createElement(
 				"div",
 				{ className: "heartWrp" },
@@ -69,7 +72,7 @@ var Heart = function (_React$Component2) {
 							d: "M61 1 L111 1 L171 36 L231 1 L281 1 L341 36 L341 136 L171 266 L1 136 L1 36 Z",
 							stroke: "#491604",
 							strokeWidth: "2",
-							fill: "#FF6B6B"
+							fill: fillcolor
 						})
 					),
 					React.createElement(
@@ -150,7 +153,9 @@ var App = function (_React$Component4) {
 			error: null,
 			isLoaded: false,
 			data: [],
-			dataIndex: 0
+			dataIndex: 0,
+			colorset: FLAT_UI_COLOR,
+			heartColor: "#ff6b6b"
 		};
 		_this4.onTonTonClick = _this4.onTonTonClick.bind(_this4);
 		return _this4;
@@ -179,8 +184,13 @@ var App = function (_React$Component4) {
 		key: "onTonTonClick",
 		value: function onTonTonClick() {
 			var data = this.state.data;
+
+			var colorset = this.state.colorset;
+			var colorset_len = colorset.length;
+
 			this.setState({
-				dataIndex: Math.floor(Math.random() * data.length)
+				dataIndex: Math.floor(Math.random() * data.length),
+				heartColor: colorset[Math.floor(Math.random() * colorset_len)]
 			});
 		}
 	}, {
@@ -206,7 +216,8 @@ var App = function (_React$Component4) {
 					React.Fragment,
 					null,
 					React.createElement(Heart, { quote: data[this.state.dataIndex].text,
-						author: data[this.state.dataIndex].author }),
+						author: data[this.state.dataIndex].author,
+						heartColor: this.state.heartColor }),
 					React.createElement(TonTon, { onTonTonClick: this.onTonTonClick })
 				);
 			}
