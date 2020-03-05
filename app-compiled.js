@@ -239,7 +239,8 @@ var App = function (_React$Component4) {
 			    error = _state.error,
 			    quoteLoaded = _state.quoteLoaded,
 			    data = _state.data,
-			    bgLoaded = _state.bgLoaded;
+			    bgLoaded = _state.bgLoaded,
+			    bgdata = _state.bgdata;
 
 
 			if (error) {
@@ -252,13 +253,20 @@ var App = function (_React$Component4) {
 				return React.createElement(BrickLoad, null);
 			} else {
 				var randomIndex = Math.floor(Math.random() * data.length);
+				var randomBG = Math.floor(Math.random() * bgdata.length);
+
 				return React.createElement(
 					React.Fragment,
 					null,
-					React.createElement(Heart, { quote: data[this.state.dataIndex].text,
-						author: data[this.state.dataIndex].author,
-						heartColor: this.state.heartColor }),
-					React.createElement(TonTon, { onTonTonClick: this.onTonTonClick })
+					React.createElement(
+						"div",
+						{ style: { backgroundImage: "url(" + bgdata[randomBG] + ")" },
+							className: "bgim" },
+						React.createElement(Heart, { quote: data[this.state.dataIndex].text,
+							author: data[this.state.dataIndex].author,
+							heartColor: this.state.heartColor }),
+						React.createElement(TonTon, { onTonTonClick: this.onTonTonClick })
+					)
 				);
 			}
 		}

@@ -165,7 +165,7 @@ class App extends React.Component {
 		});
 	}
 	render() {
-		const {error, quoteLoaded, data, bgLoaded} = this.state;
+		const {error, quoteLoaded, data, bgLoaded, bgdata} = this.state;
 
 		if (error) {
 			return <div>{error.message}</div>;
@@ -173,12 +173,21 @@ class App extends React.Component {
 			return <BrickLoad />;
 		} else {
 			let randomIndex = Math.floor(Math.random() * data.length);
+			let randomBG = Math.floor(Math.random() * bgdata.length);
+
 			return (
 				<React.Fragment>
-					<Heart quote={data[this.state.dataIndex].text} 
-						   author={data[this.state.dataIndex].author}
-						   heartColor={this.state.heartColor} />
-					<TonTon onTonTonClick={this.onTonTonClick} />
+					<div style={{backgroundImage: `url(${bgdata[randomBG]})`}}
+						 className="bgim">
+
+
+						<Heart quote={data[this.state.dataIndex].text} 
+							   author={data[this.state.dataIndex].author}
+							   heartColor={this.state.heartColor} />
+						<TonTon onTonTonClick={this.onTonTonClick} />
+
+
+					</div>
 				</React.Fragment>
 			);
 		}
