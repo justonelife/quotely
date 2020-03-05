@@ -44,3 +44,23 @@ body {
 .quote-author {
     text-align: right;
 }
+
+.tonton {
+    width: 150px;
+    height: 140px;
+    border: 0;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    /*background-image: url(../media/tonton1.png);*/
+    background-color: transparent;
+    background-size: 550%;
+    background-repeat: no-repeat;
+    /*background-position: -30px -40px;*/
+    /*background-position: 120px 100px;*/
+}
+
+.tonton:focus {
+	outline: none;
+}
