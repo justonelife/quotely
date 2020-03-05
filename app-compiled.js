@@ -6,8 +6,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var MY_QUOTES = "When something bad happens you have three choices. You can either let it define you, let is destroy you, or you can let it strengthen you.";
-
 var BrickLoad = function (_React$Component) {
 	_inherits(BrickLoad, _React$Component);
 
@@ -57,6 +55,7 @@ var Heart = function (_React$Component2) {
 		key: "render",
 		value: function render() {
 			var quote = this.props.quote;
+			var author = this.props.author;
 			return React.createElement(
 				"div",
 				{ className: "heartWrp" },
@@ -84,7 +83,7 @@ var Heart = function (_React$Component2) {
 						React.createElement(
 							"p",
 							{ className: "quote-author" },
-							"Dr. Seuss"
+							author
 						)
 					)
 				)
@@ -95,39 +94,93 @@ var Heart = function (_React$Component2) {
 	return Heart;
 }(React.Component);
 
-var App = function (_React$Component3) {
-	_inherits(App, _React$Component3);
+var TonTon = function (_React$Component3) {
+	_inherits(TonTon, _React$Component3);
+
+	function TonTon(props) {
+		_classCallCheck(this, TonTon);
+
+		var _this3 = _possibleConstructorReturn(this, (TonTon.__proto__ || Object.getPrototypeOf(TonTon)).call(this, props));
+
+		_this3.onTonTonClick = _this3.onTonTonClick.bind(_this3);
+		_this3.changeTonTon = _this3.changeTonTon.bind(_this3);
+		_this3.bgURL = "media/tonton1.png";
+		_this3.bgpx = 4; //background-position X
+		_this3.bgpy = 4; //background-position y
+		return _this3;
+	}
+
+	_createClass(TonTon, [{
+		key: "onTonTonClick",
+		value: function onTonTonClick() {
+			this.props.onTonTonClick();
+			this.changeTonTon();
+		}
+	}, {
+		key: "changeTonTon",
+		value: function changeTonTon() {
+			var tontonURL = ["media/tonton1.png", "media/tonton2.png", "media/tonton3.png"]; //temporary, dont use for real host
+			var randomTonTonURL = Math.floor(Math.random() * tontonURL.length);
+			this.bgURL = tontonURL[randomTonTonURL];
+			this.bgpx = 4 + Math.floor(Math.random() * 4) * 30; //base on sprite image
+			this.bgpy = 4 + Math.floor(Math.random() * 6) * 18.5; //base on sprite image
+		}
+	}, {
+		key: "render",
+		value: function render() {
+			return React.createElement("button", { style: { backgroundImage: "url(" + this.bgURL + ")",
+					backgroundPosition: this.bgpx + "% " + this.bgpy + "%" },
+				className: "tonton",
+				onClick: this.onTonTonClick });
+		}
+	}]);
+
+	return TonTon;
+}(React.Component);
+
+var App = function (_React$Component4) {
+	_inherits(App, _React$Component4);
 
 	function App(props) {
 		_classCallCheck(this, App);
 
-		var _this3 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+		var _this4 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-		_this3.state = {
+		_this4.state = {
 			error: null,
 			isLoaded: false,
-			data: []
+			data: [],
+			dataIndex: 0
 		};
-		return _this3;
+		_this4.onTonTonClick = _this4.onTonTonClick.bind(_this4);
+		return _this4;
 	}
 
 	_createClass(App, [{
 		key: "componentDidMount",
 		value: function componentDidMount() {
-			var _this4 = this;
+			var _this5 = this;
 
 			fetch('https://type.fit/api/quotes').then(function (res) {
 				return res.json();
 			}).then(function (result) {
-				_this4.setState({
+				_this5.setState({
 					isLoaded: true,
 					data: result
 				});
 			}, function (error) {
-				_this4.setState({
+				_this5.setState({
 					isLoaded: true,
 					error: error
 				});
+			});
+		}
+	}, {
+		key: "onTonTonClick",
+		value: function onTonTonClick() {
+			var data = this.state.data;
+			this.setState({
+				dataIndex: Math.floor(Math.random() * data.length)
 			});
 		}
 	}, {
@@ -148,10 +201,13 @@ var App = function (_React$Component3) {
 			} else if (!isLoaded) {
 				return React.createElement(BrickLoad, null);
 			} else {
+				var randomIndex = Math.floor(Math.random() * data.length);
 				return React.createElement(
 					React.Fragment,
 					null,
-					React.createElement(Heart, { quote: MY_QUOTES })
+					React.createElement(Heart, { quote: data[this.state.dataIndex].text,
+						author: data[this.state.dataIndex].author }),
+					React.createElement(TonTon, { onTonTonClick: this.onTonTonClick })
 				);
 			}
 		}

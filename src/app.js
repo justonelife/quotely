@@ -1,5 +1,3 @@
-const MY_QUOTES = "When something bad happens you have three choices. You can either let it define you, let is destroy you, or you can let it strengthen you."
-
 class BrickLoad extends React.Component {
 	render() {
 		return (
@@ -22,6 +20,7 @@ class BrickLoad extends React.Component {
 class Heart extends React.Component {
 	render() {
 		const quote = this.props.quote;
+		const author = this.props.author;
 		return (
 			<div className="heartWrp">
 		        <div className="heart">
@@ -35,10 +34,42 @@ class Heart extends React.Component {
 		            </svg>
 		            <div className="quote">
 		                <p className="quote-text">{quote}</p>
-		                <p className="quote-author">Dr. Seuss</p>
+		                <p className="quote-author">{author}</p>
 		            </div>
 		        </div>
 		    </div>
+		);
+	}
+}
+
+class TonTon extends React.Component {
+	constructor(props) {
+		super(props);
+		this.onTonTonClick = this.onTonTonClick.bind(this);
+		this.changeTonTon = this.changeTonTon.bind(this);
+		this.bgURL = "media/tonton1.png";
+		this.bgpx = 4; //background-position X
+		this.bgpy = 4; //background-position y
+	}
+	onTonTonClick() {
+		this.props.onTonTonClick();
+		this.changeTonTon();
+	}
+	changeTonTon() {
+		let tontonURL = ["media/tonton1.png", 
+						 "media/tonton2.png", 
+						 "media/tonton3.png"]//temporary, dont use for real host
+		let randomTonTonURL = Math.floor(Math.random() * tontonURL.length);
+		this.bgURL = tontonURL[randomTonTonURL];
+		this.bgpx = 4 + Math.floor(Math.random() * 4) * 30; //base on sprite image
+		this.bgpy = 4 + Math.floor(Math.random() * 6) * 18.5; //base on sprite image
+	}
+	render() {
+		return (
+			<button style={{backgroundImage: `url(${this.bgURL})`,
+							backgroundPosition: `${this.bgpx}% ${this.bgpy}%`}}
+					className="tonton" 
+					onClick={this.onTonTonClick}></button>
 		);
 	}
 }
@@ -49,8 +80,10 @@ class App extends React.Component {
 		this.state = {
 			error: null,
 			isLoaded: false,
-			data: []
+			data: [],
+			dataIndex: 0
 		};
+		this.onTonTonClick = this.onTonTonClick.bind(this);
 	}
 	componentDidMount() {
 		fetch('https://type.fit/api/quotes')
@@ -70,6 +103,12 @@ class App extends React.Component {
 				}
 			);
 	}
+	onTonTonClick() {
+		let data = this.state.data;
+		this.setState({
+			dataIndex: Math.floor(Math.random() * data.length)
+		});
+	}
 	render() {
 		const {error, isLoaded, data} = this.state;
 
@@ -78,9 +117,12 @@ class App extends React.Component {
 		} else if (!isLoaded) {
 			return <BrickLoad />;
 		} else {
+			let randomIndex = Math.floor(Math.random() * data.length);
 			return (
 				<React.Fragment>
-					<Heart quote={MY_QUOTES} />
+					<Heart quote={data[this.state.dataIndex].text} 
+						   author={data[this.state.dataIndex].author} />
+					<TonTon onTonTonClick={this.onTonTonClick} />
 				</React.Fragment>
 			);
 		}
