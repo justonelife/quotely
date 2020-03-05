@@ -122,8 +122,16 @@ class App extends React.Component {
 					//1 session need load 30 background image
 					result.forEach(val => {
 						
-						
+
 						fetch(val.download_url)
+							.then(res => res.blob())
+							.then(blob => {
+								let arr = this.state.bgdata;
+								arr.push(URL.createObjectURL(blob));
+								this.setState((state) => ({
+									bgdata: arr
+								}));
+							})
 							.then(() => this.setState(state => ({
 											bgLoaded: state.bgLoaded + 1
 										}))

@@ -190,7 +190,17 @@ var App = function (_React$Component4) {
 				//1 session need load 30 background image
 				result.forEach(function (val) {
 
-					fetch(val.download_url).then(function () {
+					fetch(val.download_url).then(function (res) {
+						return res.blob();
+					}).then(function (blob) {
+						var arr = _this5.state.bgdata;
+						arr.push(URL.createObjectURL(blob));
+						_this5.setState(function (state) {
+							return {
+								bgdata: arr
+							};
+						});
+					}).then(function () {
 						return _this5.setState(function (state) {
 							return {
 								bgLoaded: state.bgLoaded + 1
