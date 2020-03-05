@@ -86,8 +86,10 @@ class App extends React.Component {
 		super(props);
 		this.state = {
 			error: null,
-			isLoaded: false,
+			quoteLoaded: false,
+			bgLoaded: 0,
 			data: [],
+			bgdata: [],
 			dataIndex: 0,
 			colorset: FLAT_UI_COLOR,
 			heartColor: "#ff6b6b"
@@ -100,15 +102,46 @@ class App extends React.Component {
 			.then(
 				(result) => {
 					this.setState({
-						isLoaded: true,
+						quoteLoaded: true,
 						data: result
 					});
 				},
 				(error) => {
 					this.setState({
-						isLoaded: true,
+						quoteLoaded: true,
 						error
 					});
+				}
+			);
+
+		let randomPage = Math.floor(Math.random() * 33) + 1;
+		fetch(`https://picsum.photos/v2/list?page=${randomPage}&limit=30`)
+			.then(res => res.json())
+			.then(
+				(result) => {
+					//1 session need load 30 background image
+					result.forEach(val => {
+						
+						
+						fetch(val.download_url)
+							.then(() => this.setState(state => ({
+											bgLoaded: state.bgLoaded + 1
+										}))
+							)
+							.catch((error) => {
+									this.setState(state => ({
+										bgLoaded: state.bgLoaded + 1
+									}));
+									console.log(error);
+								}
+							);
+
+
+					});
+
+				},
+				(error) => {
+					console.log(error);
 				}
 			);
 	}
@@ -124,11 +157,11 @@ class App extends React.Component {
 		});
 	}
 	render() {
-		const {error, isLoaded, data} = this.state;
+		const {error, quoteLoaded, data, bgLoaded} = this.state;
 
 		if (error) {
 			return <div>{error.message}</div>;
-		} else if (!isLoaded) {
+		} else if (!quoteLoaded || (bgLoaded < 30)) {
 			return <BrickLoad />;
 		} else {
 			let randomIndex = Math.floor(Math.random() * data.length);

@@ -152,8 +152,10 @@ var App = function (_React$Component4) {
 
 		_this4.state = {
 			error: null,
-			isLoaded: false,
+			quoteLoaded: false,
+			bgLoaded: 0,
 			data: [],
+			bgdata: [],
 			dataIndex: 0,
 			colorset: FLAT_UI_COLOR,
 			heartColor: "#ff6b6b"
@@ -171,14 +173,40 @@ var App = function (_React$Component4) {
 				return res.json();
 			}).then(function (result) {
 				_this5.setState({
-					isLoaded: true,
+					quoteLoaded: true,
 					data: result
 				});
 			}, function (error) {
 				_this5.setState({
-					isLoaded: true,
+					quoteLoaded: true,
 					error: error
 				});
+			});
+
+			var randomPage = Math.floor(Math.random() * 33) + 1;
+			fetch("https://picsum.photos/v2/list?page=" + randomPage + "&limit=30").then(function (res) {
+				return res.json();
+			}).then(function (result) {
+				//1 session need load 30 background image
+				result.forEach(function (val) {
+
+					fetch(val.download_url).then(function () {
+						return _this5.setState(function (state) {
+							return {
+								bgLoaded: state.bgLoaded + 1
+							};
+						});
+					}).catch(function (error) {
+						_this5.setState(function (state) {
+							return {
+								bgLoaded: state.bgLoaded + 1
+							};
+						});
+						console.log(error);
+					});
+				});
+			}, function (error) {
+				console.log(error);
 			});
 		}
 	}, {
@@ -199,8 +227,9 @@ var App = function (_React$Component4) {
 		value: function render() {
 			var _state = this.state,
 			    error = _state.error,
-			    isLoaded = _state.isLoaded,
-			    data = _state.data;
+			    quoteLoaded = _state.quoteLoaded,
+			    data = _state.data,
+			    bgLoaded = _state.bgLoaded;
 
 
 			if (error) {
@@ -209,7 +238,7 @@ var App = function (_React$Component4) {
 					null,
 					error.message
 				);
-			} else if (!isLoaded) {
+			} else if (!quoteLoaded || bgLoaded < 30) {
 				return React.createElement(BrickLoad, null);
 			} else {
 				var randomIndex = Math.floor(Math.random() * data.length);
