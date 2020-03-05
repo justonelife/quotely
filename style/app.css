@@ -63,6 +63,8 @@ body {
     background-repeat: no-repeat;
     /*background-position: -30px -40px;*/
     /*background-position: 120px 100px;*/
+    transition: all 1s ease;
+    border-radius: 50%;
 }
 
 .tonton:focus {
