@@ -7,8 +7,22 @@
 body {
     width: 100%;
     height: 100vh;
-    background: #ffeaa7;
+    background: #dff9fb;
     position: relative;
+}
+
+.app {
+	width: 100%;
+	height: 100%;
+}
+
+.bgim {
+	width: 100%;
+	height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    transition: background-image 2s ease-in-out;
 }
 
 .heartWrp {
