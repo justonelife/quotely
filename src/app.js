@@ -32,6 +32,7 @@ class Heart extends React.Component {
 		        <div className="heart">
 		            <svg className="svg-heart" height="267" width="343">
 		                <path 
+		                	  className="svg-heart__path"
 		                      d="M61 1 L111 1 L171 36 L231 1 L281 1 L341 36 L341 136 L171 266 L1 136 L1 36 Z"
 		                      stroke="#491604"
 		                      strokeWidth="2"
