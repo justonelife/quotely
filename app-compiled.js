@@ -142,15 +142,36 @@ var TonTon = function (_React$Component3) {
 	return TonTon;
 }(React.Component);
 
-var App = function (_React$Component4) {
-	_inherits(App, _React$Component4);
+var BackGroundImage = function (_React$Component4) {
+	_inherits(BackGroundImage, _React$Component4);
+
+	function BackGroundImage() {
+		_classCallCheck(this, BackGroundImage);
+
+		return _possibleConstructorReturn(this, (BackGroundImage.__proto__ || Object.getPrototypeOf(BackGroundImage)).apply(this, arguments));
+	}
+
+	_createClass(BackGroundImage, [{
+		key: "render",
+		value: function render() {
+			var imageURL = this.props.imageURL;
+			return React.createElement("div", { style: { backgroundImage: "url(" + imageURL + ")" },
+				className: "bgim" });
+		}
+	}]);
+
+	return BackGroundImage;
+}(React.Component);
+
+var App = function (_React$Component5) {
+	_inherits(App, _React$Component5);
 
 	function App(props) {
 		_classCallCheck(this, App);
 
-		var _this4 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+		var _this5 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-		_this4.state = {
+		_this5.state = {
 			error: null,
 			quoteLoaded: false,
 			bgLoaded: 0,
@@ -160,24 +181,24 @@ var App = function (_React$Component4) {
 			colorset: FLAT_UI_COLOR,
 			heartColor: "#ff6b6b"
 		};
-		_this4.onTonTonClick = _this4.onTonTonClick.bind(_this4);
-		return _this4;
+		_this5.onTonTonClick = _this5.onTonTonClick.bind(_this5);
+		return _this5;
 	}
 
 	_createClass(App, [{
 		key: "componentDidMount",
 		value: function componentDidMount() {
-			var _this5 = this;
+			var _this6 = this;
 
 			fetch('https://type.fit/api/quotes').then(function (res) {
 				return res.json();
 			}).then(function (result) {
-				_this5.setState({
+				_this6.setState({
 					quoteLoaded: true,
 					data: result
 				});
 			}, function (error) {
-				_this5.setState({
+				_this6.setState({
 					quoteLoaded: true,
 					error: error
 				});
@@ -193,21 +214,21 @@ var App = function (_React$Component4) {
 					fetch(val.download_url).then(function (res) {
 						return res.blob();
 					}).then(function (blob) {
-						var arr = _this5.state.bgdata;
+						var arr = _this6.state.bgdata;
 						arr.push(URL.createObjectURL(blob));
-						_this5.setState(function (state) {
+						_this6.setState(function (state) {
 							return {
 								bgdata: arr
 							};
 						});
 					}).then(function () {
-						return _this5.setState(function (state) {
+						return _this6.setState(function (state) {
 							return {
 								bgLoaded: state.bgLoaded + 1
 							};
 						});
 					}).catch(function (error) {
-						_this5.setState(function (state) {
+						_this6.setState(function (state) {
 							return {
 								bgLoaded: state.bgLoaded + 1
 							};
@@ -258,15 +279,11 @@ var App = function (_React$Component4) {
 				return React.createElement(
 					React.Fragment,
 					null,
-					React.createElement(
-						"div",
-						{ style: { backgroundImage: "url(" + bgdata[randomBG] + ")" },
-							className: "bgim" },
-						React.createElement(Heart, { quote: data[this.state.dataIndex].text,
-							author: data[this.state.dataIndex].author,
-							heartColor: this.state.heartColor }),
-						React.createElement(TonTon, { onTonTonClick: this.onTonTonClick })
-					)
+					React.createElement(Heart, { quote: data[this.state.dataIndex].text,
+						author: data[this.state.dataIndex].author,
+						heartColor: this.state.heartColor }),
+					React.createElement(TonTon, { onTonTonClick: this.onTonTonClick }),
+					React.createElement(BackGroundImage, { imageURL: this.state.bgdata[randomBG] })
 				);
 			}
 		}

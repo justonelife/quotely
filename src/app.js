@@ -81,6 +81,16 @@ class TonTon extends React.Component {
 	}
 }
 
+class BackGroundImage extends React.Component {
+	render() {
+		const imageURL = this.props.imageURL;
+		return (
+			<div style={{backgroundImage: `url(${imageURL})`}}
+				 className="bgim"></div>
+		);
+	}
+}
+
 class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -177,17 +187,13 @@ class App extends React.Component {
 
 			return (
 				<React.Fragment>
-					<div style={{backgroundImage: `url(${bgdata[randomBG]})`}}
-						 className="bgim">
+					
+					<Heart quote={data[this.state.dataIndex].text} 
+						   author={data[this.state.dataIndex].author}
+						   heartColor={this.state.heartColor} />
+					<TonTon onTonTonClick={this.onTonTonClick} />
+					<BackGroundImage imageURL={this.state.bgdata[randomBG]} />
 
-
-						<Heart quote={data[this.state.dataIndex].text} 
-							   author={data[this.state.dataIndex].author}
-							   heartColor={this.state.heartColor} />
-						<TonTon onTonTonClick={this.onTonTonClick} />
-
-
-					</div>
 				</React.Fragment>
 			);
 		}
