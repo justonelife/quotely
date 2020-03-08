@@ -8,6 +8,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var FLAT_UI_COLOR = ["#ffeaa7", "#55efc4", "#81ecec", "#74b9ff", "#00cec9", "#a29bfe", "#fd79a8", "#ff7675", "#fdcb6e", "#fab1a0", "#B53471", "#4a69bd", "#079992", "#60a3bc", "#ff7f50", "#ff6b6b"];
 
+var TOTAL_IMAGE = 900;
+var IMAGE_PER_LOAD = 5;
+
 var BrickLoad = function (_React$Component) {
 	_inherits(BrickLoad, _React$Component);
 
@@ -204,11 +207,11 @@ var App = function (_React$Component5) {
 				});
 			});
 
-			var randomPage = Math.floor(Math.random() * 33) + 1;
-			fetch("https://picsum.photos/v2/list?page=" + randomPage + "&limit=30").then(function (res) {
+			var randomPage = Math.floor(Math.random() * Math.floor(TOTAL_IMAGE / IMAGE_PER_LOAD)) + 1;
+			fetch("https://picsum.photos/v2/list?page=" + randomPage + "&limit=" + IMAGE_PER_LOAD).then(function (res) {
 				return res.json();
 			}).then(function (result) {
-				//1 session need load 30 background image
+				//1 session need load IMAGE_PER_LOAD background image
 				result.forEach(function (val) {
 
 					fetch(val.download_url).then(function (res) {
@@ -270,7 +273,7 @@ var App = function (_React$Component5) {
 					null,
 					error.message
 				);
-			} else if (!quoteLoaded || bgLoaded < 30) {
+			} else if (!quoteLoaded || bgLoaded < IMAGE_PER_LOAD) {
 				return React.createElement(BrickLoad, null);
 			} else {
 				var randomIndex = Math.floor(Math.random() * data.length);

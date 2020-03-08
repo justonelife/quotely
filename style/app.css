@@ -54,6 +54,7 @@ body {
 
 .svg-heart__path {
 	transition: fill 1s ease;
+	opacity: .5;
 }
 
 .quote {

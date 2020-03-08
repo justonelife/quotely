@@ -3,6 +3,9 @@ const FLAT_UI_COLOR = ["#ffeaa7", "#55efc4", "#81ecec", "#74b9ff",
 					   "#fdcb6e", "#fab1a0", "#B53471", "#4a69bd",
 					   "#079992", "#60a3bc", "#ff7f50", "#ff6b6b"];
 
+const TOTAL_IMAGE = 900;
+const IMAGE_PER_LOAD = 5;
+
 class BrickLoad extends React.Component {
 	render() {
 		return (
@@ -124,12 +127,12 @@ class App extends React.Component {
 				}
 			);
 
-		let randomPage = Math.floor(Math.random() * 33) + 1;
-		fetch(`https://picsum.photos/v2/list?page=${randomPage}&limit=30`)
+		let randomPage = Math.floor(Math.random() * Math.floor(TOTAL_IMAGE / IMAGE_PER_LOAD)) + 1;
+		fetch(`https://picsum.photos/v2/list?page=${randomPage}&limit=${IMAGE_PER_LOAD}`)
 			.then(res => res.json())
 			.then(
 				(result) => {
-					//1 session need load 30 background image
+					//1 session need load IMAGE_PER_LOAD background image
 					result.forEach(val => {
 						
 
@@ -179,7 +182,7 @@ class App extends React.Component {
 
 		if (error) {
 			return <div>{error.message}</div>;
-		} else if (!quoteLoaded || (bgLoaded < 30)) {
+		} else if (!quoteLoaded || (bgLoaded < IMAGE_PER_LOAD)) {
 			return <BrickLoad />;
 		} else {
 			let randomIndex = Math.floor(Math.random() * data.length);
